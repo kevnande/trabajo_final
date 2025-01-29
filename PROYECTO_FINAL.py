@@ -1,14 +1,10 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
-import pandas as pd
-import streamlit as st
-
-
-import json
-import firebase_admin
 from firebase_admin import firestore
-from google.oauth2 import service_account
+from google.oauth2 import service_accountimport pandas as pd
 import streamlit as st
+import json
+
 
 # Inicializar Firebase solo una vez
 def init_firebase():
