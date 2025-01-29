@@ -10,14 +10,18 @@ import json
 # Inicializar Firebase solo una vez
 def init_firebase():
     # Cargar las credenciales desde los secretos de Streamlit Cloud
-    key_dict = st.secrets["firebase"]  # No es necesario hacer json.loads()
-
+    key_dict = st.secrets["firebase"]  # Ya no es necesario hacer json.loads()
+    
+    # Agregar el projectId a las credenciales si no está presente
+    if "project_id" not in key_dict:
+        key_dict["project_id"] = "movies-94cb0"  # Reemplaza con tu ID de proyecto
+    
     # Crear las credenciales a partir del diccionario
     creds = service_account.Credentials.from_service_account_info(key_dict)
     
     # Inicializar Firebase con las credenciales
-    firebase_admin.initialize_app(creds)  # Usamos creds directamente aquí
-    
+    firebase_admin.initialize_app(creds)
+
 # Llamar a la función para inicializar Firebase
 if not firebase_admin._apps:
     init_firebase()
