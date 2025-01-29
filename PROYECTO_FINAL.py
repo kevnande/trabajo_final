@@ -1,7 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
 from firebase_admin import firestore
-from google.oauth2 import service_accountimport pandas as pd
+from google.oauth2 import service_account
 import streamlit as st
 import pandas as pd
 import json
