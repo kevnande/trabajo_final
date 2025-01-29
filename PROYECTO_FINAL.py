@@ -25,10 +25,9 @@ def load_data(collection_name):
 # Cargar los datos de la colección 'netflix'
 df = load_data("netflix")
 
-
 st.title("Dashboard de Filmes")
 
-
+# Mostrar todos los filmes
 show_films = st.sidebar.checkbox("Mostrar todos los filmes", value=True)
 if show_films:
     st.header("Lista de Filmes")
@@ -36,7 +35,7 @@ if show_films:
 else:
     st.info("Selecciona el checkbox para mostrar la lista de filmes.")
 
-
+# Buscar por nombre
 search_name = st.sidebar.text_input("Buscar por nombre:")
 if st.sidebar.button("Buscar Nombre"):
     if search_name:
@@ -46,8 +45,14 @@ if st.sidebar.button("Buscar Nombre"):
     else:
         st.info("Escribe un nombre para buscar.")
 
+# Manejo de la columna 'director'
+if 'director' in df.columns:
+    directors = df['director'].dropna().unique().tolist()
+else:
+    st.warning("'director' no está en las columnas de los datos cargados.")
+    directors = []
 
-directors = df['director'].dropna().unique().tolist()
+# Filtrar por director
 selected_director = st.sidebar.selectbox("Selecciona un director", directors)
 if st.sidebar.button("Filtrar por Director"):
     if selected_director:
@@ -57,7 +62,7 @@ if st.sidebar.button("Filtrar por Director"):
     else:
         st.info("Selecciona un director para filtrar.")
 
-
+# Insertar un nuevo filme
 with st.sidebar.form("insert_film_form"):
     st.header("Insertar un nuevo filme")
     new_name = st.text_input("Nombre:")
