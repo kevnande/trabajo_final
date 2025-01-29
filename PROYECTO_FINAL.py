@@ -2,15 +2,20 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import pandas as pd
 import streamlit as st
+import json 
 
 
+@st.cache_resource
+def init_firebase():
+    firebase_creds = json.loads(st.secrets["firebase"])
+    cred = credentials.Certificate(firebase_creds)
+    return firebase_admin.initialize_app(cred)
+
+# Inicializar Firebase solo una vez
 if not firebase_admin._apps:
-    cred = credentials.Certificate("moviescreds.json")  
-    firebase_admin.initialize_app(cred)
-
+    init_firebase()
 
 db = firestore.client()
-
 
 @st.cache_data
 def load_data(collection_name):
