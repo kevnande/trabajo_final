@@ -6,7 +6,7 @@ import streamlit as st
 import json
 key_dict = json.loads(st.secrets["firebase"])
 creds = service_account.Credentials.from_service_account_info(key_dict)
-db = firestore.Client(credentials=creds, project="movies"
+db = firestore.Client(credentials=creds, project="movies")
 
 @st.cache_data
 def load_data(collection_name):
