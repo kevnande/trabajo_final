@@ -3,23 +3,10 @@ from firebase_admin import firestore
 from google.oauth2 import service_account
 import streamlit as st
 
-# Función para inicializar Firebase
-def init_firebase():
-    key_dict = st.secrets["firebase"]  # Asegúrate de que 'firebase' esté correctamente configurado en tus secretos
-    
-    # Agregar el project_id si no está presente
-    if "project_id" not in key_dict:
-        key_dict["project_id"] = "movies-94cb0"  # Asegúrate de reemplazarlo por tu ID de proyecto real
-    
-    # Crear las credenciales
-    creds = service_account.Credentials.from_service_account_info(key_dict)
-        
-# Inicializar Firebase solo si aún no está inicializado
-if not firebase_admin._apps:
-    init_firebase()
-
-# Obtener la instancia de Firestore
-db = firestore.client()
+import json
+key_dict = json.loads(st.secrets["firebase"])
+creds = service_account.Credentials.from_service_account_info(key_dict)
+db = firestore.Client(credentials=creds, project="movies"
 
 @st.cache_data
 def load_data(collection_name):
