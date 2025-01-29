@@ -4,8 +4,9 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 # Cargar las credenciales desde un archivo JSON
-cred = credentials.Certificate("moviescreds.json")  # Reemplázalo con la ruta correcta
-firebase_admin.initialize_app(cred, {"projectId": "movies-94cb0"})  # Reemplázalo con tu ID de proyecto
+if not firebase_admin._apps:
+    cred = credentials.Certificate("moviescreds.json")  # Reemplázalo con la ruta correcta
+    firebase_admin.initialize_app(cred, {"projectId": "movies-94cb0"})  # Reemplázalo con tu ID de proyecto
 
 # Ahora sí, conecta con Firestore
 db = firestore.client()
