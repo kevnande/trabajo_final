@@ -1,11 +1,20 @@
-import streamlit as st
-import pandas as pd
-from google.cloud import firestore
+import firebase_admin
+from firebase_admin import credentials, firestore
 from google.oauth2 import service_account
-import json
-key_dict = json.loads(st.secrets["firebase"])
+import streamlit as st
+
+# Convertir st.secrets["firebase"] en un diccionario si es un AttrDict
+key_dict = dict(st.secrets["firebase"])
+
+# Crear las credenciales
 creds = service_account.Credentials.from_service_account_info(key_dict)
-db = firestore.Client(credentials=creds, project="movies")
+
+# Inicializar Firebase solo si no está inicializado
+if not firebase_admin._apps:
+    firebase_admin.initialize_app(creds)
+
+# Obtener la instancia de Firestore
+db = firestore.client()
 
 @st.cache_data
 def load_data(collection_name):
