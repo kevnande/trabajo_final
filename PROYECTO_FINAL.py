@@ -1,35 +1,27 @@
+import os
+os.environ["GOOGLE_CLOUD_PROJECT"] = "movies-94cb0"  # Reemplaza con tu ID de proyecto
+
 import firebase_admin
-from firebase_admin import credentials, firestore
 from firebase_admin import firestore
 from google.oauth2 import service_account
 import streamlit as st
-import pandas as pd
-import json
 
-
-# Inicializar Firebase solo una vez
+# Función para inicializar Firebase
 def init_firebase():
-    # Cargar las credenciales desde los secretos de Streamlit Cloud
-    key_dict = st.secrets["firebase"]  # Ya no es necesario hacer json.loads()
-    
-    # Agregar el projectId a las credenciales si no está presente
-    if "project_id" not in key_dict:
-        key_dict["project_id"] = "movies-94cb0"  # Reemplaza con tu ID de proyecto
-    
-    # Crear las credenciales a partir del diccionario
+    key_dict = st.secrets["firebase"]
     creds = service_account.Credentials.from_service_account_info(key_dict)
     
     # Inicializar Firebase con las credenciales
     firebase_admin.initialize_app(creds)
 
-# Llamar a la función para inicializar Firebase
+# Inicializar Firebase solo si no está inicializado
 if not firebase_admin._apps:
     init_firebase()
 
 # Obtener la instancia de Firestore
 db = firestore.client()
 
-# El resto de tu código
+
 @st.cache_data
 def load_data(collection_name):
     try:
