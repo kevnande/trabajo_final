@@ -10,8 +10,8 @@ import json
 # Inicializar Firebase solo una vez
 def init_firebase():
     # Cargar las credenciales desde los secretos de Streamlit Cloud
-    key_dict = json.loads(st.secrets["firebase"])  # Asegúrate de que "firebase" tenga las credenciales en formato JSON
-    
+    key_dict = st.secrets["firebase"]  # No es necesario hacer json.loads()
+
     # Crear las credenciales a partir del diccionario
     creds = service_account.Credentials.from_service_account_info(key_dict)
     
@@ -38,7 +38,6 @@ def load_data(collection_name):
 
 # Cargar los datos de la colección 'netflix'
 df = load_data("netflix")
-
 
 
 st.title("Dashboard de Filmes")
