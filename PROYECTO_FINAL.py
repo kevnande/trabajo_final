@@ -4,12 +4,31 @@ import pandas as pd
 import streamlit as st
 
 
-if not firebase_admin._apps:
-    cred = credentials.Certificate("moviescreds.json")  
-    firebase_admin.initialize_app(cred)
+import json
+import firebase_admin
+from firebase_admin import firestore
+from google.oauth2 import service_account
+import streamlit as st
 
+# Inicializar Firebase solo una vez
+def init_firebase():
+    # Cargar las credenciales desde los secretos de Streamlit Cloud
+    key_dict = json.loads(st.secrets["firebase"])  # Asegúrate de que "firebase" tenga las credenciales en formato JSON
+    
+    # Crear las credenciales a partir del diccionario
+    creds = service_account.Credentials.from_service_account_info(key_dict)
+    
+    # Inicializar Firebase con las credenciales
+    firebase_admin.initialize_app(credentials=creds)
+
+# Llamar a la función para inicializar Firebase
+if not firebase_admin._apps:
+    init_firebase()
+
+# Obtener la instancia de Firestore
 db = firestore.client()
 
+# El resto de tu código
 @st.cache_data
 def load_data(collection_name):
     try:
@@ -20,8 +39,9 @@ def load_data(collection_name):
         st.error(f"Error al cargar datos: {e}")
         return pd.DataFrame()
 
-
+# Cargar los datos de la colección 'netflix'
 df = load_data("netflix")
+
 
 
 st.title("Dashboard de Filmes")
