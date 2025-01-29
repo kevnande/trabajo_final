@@ -4,19 +4,12 @@ import pandas as pd
 import streamlit as st
 
 
-# Inicializar Firebase solo una vez
-def init_firebase():
-    firebase_creds = st.secrets["firebase"]
-    
-    # Proveer las credenciales a Firebase
-    cred = credentials.Certificate(firebase_creds)
-    
-    # Inicializar Firebase
-    return firebase_admin.initialize_app(cred)
-
-# Llamar a la función para inicializar Firebase
 if not firebase_admin._apps:
-    init_firebase()
+    cred = credentials.Certificate("moviescreds.json")  
+    firebase_admin.initialize_app(cred)
+
+
+db = firestore.client()
 
 # Obtener la instancia de Firestore
 db = firestore.client()
