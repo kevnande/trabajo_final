@@ -2,12 +2,12 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import pandas as pd
 import streamlit as st
-import toml 
 
 
 @st.cache_resource
 def init_firebase():
-    firebase_creds = toml.loads(st.secrets["firebase"])
+    
+    firebase_creds = st.secrets["firebase"]
     cred = credentials.Certificate(firebase_creds)
     return firebase_admin.initialize_app(cred)
 
@@ -15,6 +15,7 @@ def init_firebase():
 if not firebase_admin._apps:
     init_firebase()
 
+# Obtener la instancia de Firestore
 db = firestore.client()
 
 @st.cache_data
