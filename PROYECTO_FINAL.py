@@ -8,10 +8,6 @@ if not firebase_admin._apps:
     cred = credentials.Certificate("moviescreds.json")  
     firebase_admin.initialize_app(cred)
 
-
-db = firestore.client()
-
-# Obtener la instancia de Firestore
 db = firestore.client()
 
 @st.cache_data
