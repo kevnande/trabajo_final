@@ -16,8 +16,8 @@ def init_firebase():
     creds = service_account.Credentials.from_service_account_info(key_dict)
     
     # Inicializar Firebase con las credenciales
-    firebase_admin.initialize_app(credentials=creds)
-
+    firebase_admin.initialize_app(creds)  # Usamos creds directamente aquí
+    
 # Llamar a la función para inicializar Firebase
 if not firebase_admin._apps:
     init_firebase()
