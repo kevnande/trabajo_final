@@ -1,19 +1,12 @@
+import os
 import firebase_admin
 from firebase_admin import credentials, firestore
-from google.oauth2 import service_account
-import streamlit as st
 
-# Convertir st.secrets["firebase"] en un diccionario si es un AttrDict
-key_dict = dict(st.secrets["firebase"])
+# Cargar las credenciales desde un archivo JSON
+cred = credentials.Certificate("moviescreds.json")  # Reemplázalo con la ruta correcta
+firebase_admin.initialize_app(cred, {"projectId": "movies-94cb0"})  # Reemplázalo con tu ID de proyecto
 
-# Crear las credenciales
-creds = service_account.Credentials.from_service_account_info(key_dict)
-
-# Inicializar Firebase solo si no está inicializado
-if not firebase_admin._apps:
-    firebase_admin.initialize_app(creds)
-
-# Obtener la instancia de Firestore
+# Ahora sí, conecta con Firestore
 db = firestore.client()
 
 @st.cache_data
