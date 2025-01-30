@@ -2,15 +2,14 @@ import os
 import streamlit as st
 import pandas as pd
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials
 
 # Cargar las credenciales desde un archivo JSON
 if not firebase_admin._apps:
-    cred = credentials.Certificate("moviescreds.json")  # Reemplázalo con la ruta correcta
-    firebase_admin.initialize_app(cred, {"projectId": "movies-94cb0"})  # Reemplázalo con tu ID de proyecto
+    cred = credentials.Certificate(os.path.join(os.getcwd(), "moviescreds.json"))
+    firebase_admin.initialize_app(cred)
+    
 
-# Ahora sí, conecta con Firestore
-db = firestore.client()
 
 @st.cache_data
 def load_data(collection_name):
