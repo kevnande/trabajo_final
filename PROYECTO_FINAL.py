@@ -2,14 +2,21 @@ import os
 import streamlit as st
 import pandas as pd
 import firebase_admin
-from firebase_admin import credentials
+from firebase_admin import credentials, firestore
 
-# Cargar las credenciales desde un archivo JSON
+# Verificar si Firebase ya está inicializado para evitar errores
 if not firebase_admin._apps:
-    cred = credentials.Certificate(os.path.join(os.getcwd(), "moviescreds.json"))
-    firebase_admin.initialize_app(cred)
-    
+    try:
+        cred = credentials.Certificate("moviescreds.json")  # Asegúrate de que el archivo existe
+        firebase_admin.initialize_app(cred, {"projectId": "movies-94cb0"})  # Reemplázalo con tu ID de proyecto
+    except Exception as e:
+        st.error(f"Error al inicializar Firebase: {e}")
 
+# Verifica que la inicialización fue exitosa antes de usar Firestore
+if firebase_admin._apps:
+    db = firestore.client()
+else:
+    st.error("No se pudo inicializar Firebase. Verifica las credenciales.")
 
 @st.cache_data
 def load_data(collection_name):
